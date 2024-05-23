@@ -467,6 +467,7 @@ function Track:init()
     z=function(x,v) if v==nil then self.lfos["z"]:stop() end;params:set(self.id.."send_reverb",x/100) end,
     Z=function(x,v) if v==nil then self.lfos["Z"]:stop() end;params:set(self.id.."send_delay",x/100) end,
     y=function(x,v) if v==nil then self.lfos["y"]:stop() end;params:set(self.id.."transpose",x) end,
+    v=function(x,v) if v==nil then self.lfos["v"]:stop() end;params:set(self.id.."db",util.clamp(x,-48,12)) end,
     N=function(x,v) 
       if v==nil then self.lfos["N"]:stop() end
       params:set(self.id.."crow_slew",util.clamp(x,0,1000)) 
