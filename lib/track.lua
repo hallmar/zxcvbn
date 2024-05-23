@@ -133,9 +133,24 @@ function Track:init()
   -- oilcan stuff
   params:add_option(self.id.."select_timbre","timbre",{0,1,2,3,4,5,6},1)
   params:set_action(self.id.."select_timbre",function()
+  
     -- rerun show/hiding
     self:select(self.selected)
   end)
+
+  params:add_binary(self.id..'copy_timbre','copy timbre')
+  params:set_action(self.id..'copy_timbre',function()
+    for _,v in ipairs(params_menu_oilcan) do 
+      params_oilcan_clipboard[v.id] = params:get(self.id..v.id..'_'..params:get(self.id..'select_timbre'))
+    end
+  end)
+	params:add_binary(self.id..'paste_timbre','paste timbre')
+  params:set_action(self.id..'paste_timbre',function()
+    for _,v in ipairs(params_menu_oilcan) do 
+      params:set(self.id..v.id..'_'..params:get(self.id..'select_timbre'),params_oilcan_clipboard[v.id]) 
+    end
+  end)
+  
   params:add_binary(self.id..'trig','trig')
 	params:set_action(self.id..'trig', function()
       local d = params:get(self.id.."select_timbre") 
@@ -158,6 +173,7 @@ function Track:init()
     {id = 'gain',	name = 'gain',	min = 0,	max = 10,	default = 1,	units = 'x'},
     {id = 'routing',	name = 'routing',	min = 0,	max = 1,	default = 0.1,	k = 0},	
   }
+  params_oilcan_clipboard = {}
   --create all params for oilcan
   for j=1,OILCAN_NUM_TIMBERS do
     for _,pram in ipairs(params_menu_oilcan) do    
@@ -405,7 +421,7 @@ function Track:init()
   self.params["dx7"]={"db","monophonic_release","gate_note","filter","attack","pan","release","compressing","compressible","dx7_preset","send_reverb","send_delay"}
   self.params["softcut"]={"sc","sc_sync","get_onsets","gate","pitch","play_through","sample_file","sc_level","sc_pan","sc_rec_level","sc_rate","sc_loop_end"}
   self.params["zassersby"]={"crow_slew","envelope_type","wavefold","fm_low_ratio","fm_high_ratio","fm_low","fm_high","pb_attack","peak","release","aux_dest","aux_env","aux_release","gate_note","monophonic_release","db","send_reverb","send_delay","pan"}
-  self.params["oilcan"]={"decimate","target_file","save_kit","save_new","load_kit","monophonic_release","db","send_reverb","send_delay","pan","oil_release","filter"} --define params that are common for all timbers of oilcan, except select timbre.
+  self.params["oilcan"]={"decimate","target_file","save_kit","save_new","load_kit","monophonic_release","db","send_reverb","send_delay","pan","oil_release","filter",'paste_timbre','copy_timbre'} --define params that are common for all timbers of oilcan, except select timbre.
 
   params:add_option(self.id.."lfo_shape","lfo shape", self.lfo_shape_options,1)
   params:set_action(self.id.."lfo_shape",function(x)
