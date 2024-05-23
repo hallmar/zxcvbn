@@ -131,7 +131,7 @@ function Track:init()
 
 
   -- oilcan stuff
-  params:add_number(self.id.."select_timbre","timbre",1,OILCAN_NUM_TIMBERS,1)
+  params:add_option(self.id.."select_timbre","timbre",{0,1,2,3,4,5,6},1)
   params:set_action(self.id.."select_timbre",function()
     -- rerun show/hiding
     self:select(self.selected)
@@ -528,6 +528,8 @@ end,shift_updown=function(d)
     params:delta(self.id.."sc",d)
   elseif params:get(self.id.."track_type")==TYPE_ZASSERSBY then
     params:delta(self.id.."envelope_type",d)
+  elseif params:get(self.id.."track_type")==TYPE_OILCAN then
+    params:delta(self.id.."target_file",d)
   end
 end,
 
@@ -1005,6 +1007,8 @@ function Track:description()
     s=s..string.format(" (%s)",params:string(self.id.."sc"))
   elseif params:get(self.id.."track_type")==TYPE_ZASSERSBY then
     s=s..string.format(" (%s)",params:string(self.id.."envelope_type"))
+  elseif params:get(self.id.."track_type")==TYPE_OILCAN then
+    s=s..string.format(" (%s)",params:string(self.id.."target_file"))
   end
   return s
 end
