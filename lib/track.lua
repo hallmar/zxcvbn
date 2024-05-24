@@ -125,7 +125,11 @@ function Track:init()
   params:add_binary(self.id.."midi_cc_enable", "enable cc", "toggle",0)
   params:add_number(self.id.."midi_cc_number","cc number",0,127,0)
   params:add_number(self.id.."midi_cc","cc value(j)",0,127,0)
-
+  params:add_binary(self.id.."midi_panic","panic!")
+  params:set_action(self.id.."midi_panic",function()
+    print("oh fuck!")
+    self:midi_panic()
+  end)
   -- Passersby stuff
   params:add_option(self.id.."envelope_type","envelope type",{"lpg","sustain"},1)
 
@@ -416,7 +420,7 @@ function Track:init()
   self.params["crow"]={"crow_type","crow_gate","attack","gate_note","release","crow_sustain","crow_slew"}
   self.params["jf"]={"jf_type"} -- jf options to come
   self.params["wsyn"]={"wsyn_type"} -- wsyn options to come
-  self.params["midi"]={"midi_ch","gate_note","midi_dev","midi_cc_number","midi_cc","midi_cc_enable"} 
+  self.params["midi"]={"midi_ch","gate_note","midi_dev","midi_cc_number","midi_cc","midi_cc_enable","midi_panic"} 
   self.params["mx.synths"]={"crow_slew","db","monophonic_release","gate_note","filter","db_sub","attack","pan","release","compressing","compressible","mx_synths","mod1","mod2","mod3","mod4","db_sub","send_reverb","send_delay"}
   self.params["dx7"]={"db","monophonic_release","gate_note","filter","attack","pan","release","compressing","compressible","dx7_preset","send_reverb","send_delay"}
   self.params["softcut"]={"sc","sc_sync","get_onsets","gate","pitch","play_through","sample_file","sc_level","sc_pan","sc_rec_level","sc_rate","sc_loop_end"}
@@ -1066,6 +1070,15 @@ function Track:resetlfos()
       self.lfos[k]:stop()
     end
   end  
+end
+
+--midi panic function!
+function Track:midi_panic()
+  for i=0,127,1 do 
+    midi_device[params:get(self.id.."midi_dev")].note_off(i,0,params:get(self.id.."midi_ch"))
+  end
+  
+  --send midi note off for all notes in existence!
 end
 --oilcan functions
 function Track:oilcan_save_kit(path)
