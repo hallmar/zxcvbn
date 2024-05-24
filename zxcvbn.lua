@@ -841,8 +841,8 @@ function params_action()
       do return end
     end
     for i,s in ipairs(data.tracks) do
-      print("loads",i,s)
-      print("resetting LFO's")
+      --print("loads",i,s)
+      --print("resetting LFO's")
       tracks[i]:loads(s)
       tracks[i]:resetlfos()
     end
