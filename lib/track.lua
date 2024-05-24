@@ -621,7 +621,7 @@ self.play_fn[TYPE_MXSAMPLES]={
     end
     local folder=_path.audio.."mx.samples/"..params:string(self.id.."mx_sample") -- TODO: choose from option
     local note=d.note_to_emit+params:get(self.id.."pitch")
-    print("mods.v",mods.v)
+    --print("mods.v",mods.v)
     local velocity=util.clamp(util.linlin(-48,12,0,127,params:get(self.id.."db")+(mods.v or 0)),1,127)
     local amp=util.dbamp(params:get(self.id.."db")+(mods.v or 0))
     local pan=params:get(self.id.."pan")
@@ -757,7 +757,7 @@ self.play_fn[TYPE_OILCAN]={
     end,
   preview=function(d)
     local p = d
-    print(p)
+    --print(p)
     if d ==nil then
       do return end
     end
@@ -844,7 +844,7 @@ self.play_fn[TYPE_CROW]={
   last_note=0,
   note_off=function(d,mods) --In tests it appears this function is never be called, maybe redundant?
     local gate_mode = params:get(self.id.."crow_gate")
-    print("note off")
+    --print("note off")
     local note=d.note_to_emit+params:get(self.id.."pitch")
     if self.play_fn[TYPE_CROW].last_note~=note then 
       do return end 
@@ -856,7 +856,7 @@ self.play_fn[TYPE_CROW]={
       crow.output[i+1].action=crow_asl
       crow.output[i+1]()
     else
-      print("gate off")
+      --print("gate off")
       crow.output[i+1].volts=0
     end
   end,
@@ -896,7 +896,7 @@ self.play_fn[TYPE_CROW]={
         crow.output[i+1].volts=0
         local crow_trigger=string.format("times(%1.0f,{to(%3.3f,%3.3f,logarithmic), to(%3.3f,%3.3f,exponential), to(0,%3.3f)})",mods.x,params:get(self.id.."crow_sustain"),2/1000,params:get(self.id.."crow_sustain"),duration/10,2/1000)
         local crow_asl = string.format("times(%1.0f,{to(%3.3f,%3.3f,logarithmic), to(%3.3f,%3.3f,exponential), to(0,%3.3f)})",mods.x,level,params:get(self.id.."attack")/1000,params:get(self.id.."crow_sustain"),duration,params:get(self.id.."release")/1000)
-        print(crow_asl)
+        --print(crow_asl)
      
         if gate_mode == 1 then
           crow.output[i+1].action=crow_asl
