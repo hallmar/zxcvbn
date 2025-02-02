@@ -102,7 +102,7 @@ function ViewSelect:split(inputstr,sep)
 end
 
 function ViewSelect:list_folders(path)
-  local folder_string=util.os_capture("find "..path.." -maxdepth 1 -not -empty -type d | tail -n +2 | sort",true)
+  local folder_string=util.os_capture("find ".."\""..path.."\"".." -maxdepth 1 -not -empty -type d | tail -n +2 | sort",true)
   local cur_path=self:split(path,"/")
   local folders={}
   for s in folder_string:gmatch('[^\r\n]+') do
@@ -118,7 +118,7 @@ function ViewSelect:list_folders(path)
 end
 
 function ViewSelect:list_files(path)
-  local folder_string=util.os_capture("find "..path.." -maxdepth 1 -type f -name '*.wav' -o -name '*.flac' -o -name '*.aif' | sort",true)
+  local folder_string=util.os_capture("find ".."\""..path.."\"".." -maxdepth 1 -type f -name '*.wav' -o -name '*.flac' -o -name '*.aif' | sort",true)
   local files={}
   for s in folder_string:gmatch('[^\r\n]+') do
     -- trim string
